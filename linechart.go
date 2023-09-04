@@ -51,6 +51,7 @@ func (l *LineChart) SetNumberFormat(numberFormat string) *LineChart {
 
 func (l *LineChart) SetHorizontalLines(horizontalLines int) *LineChart {
 	l.horizontalLines = horizontalLines
+	fmt.Println("coucou")
 	return l
 }
 
@@ -60,40 +61,49 @@ func (l *LineChart) RenderSVG(w io.Writer) error {
 	xaxisHeight := 50
 	yaxisWidth := 50
 	gap := 10
+	rightMargin := 20
 
-	startTag(w, "svg",
-		map[string]string{
-			"version": "1.1",
-			"xmlns":   "http://www.w3.org/2000/svg",
-			"width":   fmt.Sprintf("%d", l.width),
-			"height":  fmt.Sprintf("%d", l.height),
-		},
+	// start svg
+	fmt.Fprintf(
+		w,
+		"<svg varsion='1.1' xmlns='http://www.w3.org/2000/svg' width='%d' height='%d'>",
+		l.width,
+		l.height,
 	)
 
 	// background
-	fmt.Fprintf(w, "<rect width=\"100%%\" height=\"100%%\" fill=\"%s\" />", l.colors.Background)
+	fmt.Fprintf(
+		w,
+		"<rect width=\"100%%\" height=\"100%%\" fill=\"%s\" />",
+		l.colors.Background,
+	)
 
 	var color string
 
-	//dh := float64(l.height-headerHeight-xaxisHeight-gap*2) / float64(l.horizontalLines-1)
-	// horizontal lines
-	/*
-		for i := 0; i < l.horizontalLines-1; i++ {
-			color = "#eee"
-			fmt.Fprintf(
-				w,
-				"<line x1='%d' x2='%d' y1='%f' y2='%f' stroke='%s' stroke-width='1'/>",
-				yaxisWidth,
-				l.width,
-				float64(headerHeight+gap)+dh*float64(i),
-				float64(headerHeight+gap)+dh*float64(i),
-				color,
-			)
-		}
-	*/
+	// horizontal lines and labels
+	labels, hlines, convy := yAxisFit(headerHeight, l.height-xaxisHeight-gap, l.data)
+	color = "#eee"
+	for i, hline := range hlines {
+		fmt.Fprintf(
+			w,
+			"<line x1='%d' x2='%d' y1='%f' y2='%f' stroke='%s' stroke-width='1'/>",
+			yaxisWidth,
+			l.width-rightMargin,
+			convy(hline),
+			convy(hline),
+			color,
+		)
+		fmt.Fprintf(
+			w,
+			"<text x='%f' y='%f'>%s</text>",
+			float64(gap),
+			convy(hline),
+			labels[i],
+		)
+	}
 
 	// vertical lines
-	dw := float64(l.width-yaxisWidth-gap*2) / float64(len(l.xaxis)-1)
+	dw := float64(l.width-yaxisWidth-gap*2-rightMargin) / float64(len(l.xaxis)-1)
 	for i := 0; i < len(l.xaxis); i++ {
 		if i == 0 {
 			color = "#777"
@@ -109,6 +119,13 @@ func (l *LineChart) RenderSVG(w io.Writer) error {
 			l.height-xaxisHeight,
 			color,
 		)
+		fmt.Fprintf(
+			w,
+			"<text x='%f' y='%f' dominant-baseline='middle' text-anchor='middle'>%s</text>",
+			float64(yaxisWidth+gap)+dw*float64(i),
+			float64(l.height-xaxisHeight/2),
+			l.xaxis[i],
+		)
 	}
 
 	// xaxis
@@ -123,19 +140,34 @@ func (l *LineChart) RenderSVG(w io.Writer) error {
 		color,
 	)
 
-	// min-max
-	min, max := l.data[0][0], l.data[0][0]
-	for i := range l.data {
-		for _, v := range l.data[i] {
-			if v < min {
-				min = v
+	// series
+	for s, serie := range l.data {
+		for i := 0; i < len(serie); i++ {
+			if i < len(serie)-1 {
+				fmt.Fprintf(
+					w,
+					"<line x1='%f' x2='%f' y1='%f' y2='%f' stroke='%s' stroke-width='2'/>",
+					float64(yaxisWidth+gap)+dw*float64(i),
+					float64(yaxisWidth+gap)+dw*float64(i+1),
+					convy(serie[i]),
+					convy(serie[i+1]),
+					l.colors.ColorPalette[s%len(l.colors.ColorPalette)],
+				)
 			}
-			if v > max {
-				max = v
-			}
+			fmt.Fprintf(
+				w,
+				"<circle cx='%f' cy='%f' r='3' fill='%s' />",
+				float64(yaxisWidth+gap)+dw*float64(i),
+				convy(serie[i]),
+				l.colors.ColorPalette[s%len(l.colors.ColorPalette)],
+			)
 		}
 	}
 
-	endTag(w, "svg")
+	seriesLegend(w, headerHeight, l.width, l.series, l.colors)
+
+	// start svg
+	fmt.Fprintf(w, "</svg>")
+
 	return nil
 }

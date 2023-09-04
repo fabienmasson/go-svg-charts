@@ -13,8 +13,8 @@ func TestLineChart(t *testing.T) {
 	caeq2 := make([]float64, 0)
 
 	for i := 0; i < 12; i++ {
-		caeq1 = append(caeq1, rand.Float64()*1000)
-		caeq2 = append(caeq2, rand.Float64()*1000)
+		caeq1 = append(caeq1, rand.Float64()*10)
+		caeq2 = append(caeq2, rand.Float64()*20)
 	}
 
 	lc := charts.NewLineChart(

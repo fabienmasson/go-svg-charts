@@ -10,38 +10,6 @@ type Dimension struct {
 	width, height int
 }
 
-func startTag(w io.Writer, tag string, properties map[string]string) {
-	w.Write([]byte("<"))
-	w.Write([]byte(tag))
-	for k, v := range properties {
-		w.Write([]byte(" "))
-		w.Write([]byte(k))
-		w.Write([]byte("=\""))
-		w.Write([]byte(v))
-		w.Write([]byte("\""))
-	}
-	w.Write([]byte(">"))
-}
-
-func endTag(w io.Writer, tag string) {
-	w.Write([]byte("</"))
-	w.Write([]byte(tag))
-	w.Write([]byte(">"))
-}
-
-func tag(w io.Writer, tag string, properties map[string]string) {
-	w.Write([]byte("<"))
-	w.Write([]byte(tag))
-	for k, v := range properties {
-		w.Write([]byte(" "))
-		w.Write([]byte(k))
-		w.Write([]byte("=\""))
-		w.Write([]byte(v))
-		w.Write([]byte("\""))
-	}
-	w.Write([]byte("/>"))
-}
-
 // yAxisDimensions calculates the y-axis dimensions for a given height and data.
 //
 // Parameters:
@@ -52,9 +20,9 @@ func tag(w io.Writer, tag string, properties map[string]string) {
 // - slice of line labels
 // - slice of lines y
 // - slice of converted data y
-func yAxisDimensions(height float64, data [][]float64) ([]string, []float64, [][]float64) {
+func yAxisFit(start int, end int, data [][]float64) ([]string, []float64, func(float64) float64) {
 	min, max := data[0][0], data[0][0]
-	for i := 1; i < len(data); i++ {
+	for i := 0; i < len(data); i++ {
 		for j := 0; j < len(data[i]); j++ {
 			if data[i][j] < min {
 				min = data[i][j]
@@ -77,32 +45,55 @@ func yAxisDimensions(height float64, data [][]float64) ([]string, []float64, [][
 		interval = math.Pow10(int(i))
 	}
 
-	top := 0.05 * height    // where min value goes
-	bottom := 0.95 * height // where max value goes
+	height := float64(end - start)
+	top := 0.0       // where max value goes
+	bottom := height // where min value goes
+
+	fmt.Printf("top:%f; bottom:%f; start:%d; end: %d; min: %f, max: %f, interval: %f\n", top, bottom, start, end, min, max, interval)
 
 	conv := func(val float64) float64 {
-		return bottom - (bottom-top)*(val-min)/(max-min)
+		return float64(start) + bottom - (bottom-top)*(val-min)/(max-min)
 	}
 
 	k := 0
 	labels := make([]string, 0)
 	lines := make([]float64, 0)
-	convdata := make([][]float64, len(data))
 	for {
 		val := float64(int(min/interval)+1+k) * interval
 		if val < max {
-			labels = append(labels, fmt.Sprintf("%f", val))
-			lines = append(lines, conv(val))
+			if val > 1 || val <= -1 {
+				labels = append(labels, fmt.Sprintf("%d", int(val)))
+			} else {
+				labels = append(labels, fmt.Sprintf("%f", val))
+			}
+			lines = append(lines, val)
 		} else {
 			break
 		}
-	}
-	for m, _ := range data {
-		convdata[m] = make([]float64, len(data[m]))
-		for n, _ := range data[m] {
-			convdata[m][n] = conv(data[m][n])
-		}
+		k++
 	}
 
-	return labels, lines, convdata
+	return labels, lines, conv
+}
+
+func seriesLegend(w io.Writer, height int, width int, series []string, colors *ColorScheme) {
+	rectDimension := Dimension{30, 10}
+
+	for i, serie := range series {
+
+		fmt.Fprintf(
+			w,
+			"<rect width='%d' height='%d' fill='%s' />",
+			rectDimension.width,
+			rectDimension.height,
+			colors.ColorPalette[i],
+		)
+
+		fmt.Fprintf(
+			w,
+			"<text>%s</text>",
+			serie,
+		)
+	}
+
 }

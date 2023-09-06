@@ -122,7 +122,7 @@ func seriesLegend(
 func writeFontStyle(w io.Writer) {
 	fmt.Fprintf(
 		w,
-		"<style>text { font-size: 10px; font-family: sans-serif }</style>",
+		"<style>text { font-size: 8px; font-family: sans-serif } .axislegend { font-size: 10px; font-weight: bold }</style>",
 	)
 }
 

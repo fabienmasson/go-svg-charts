@@ -13,6 +13,8 @@ type LineChart struct {
 	horizontalLines int
 	numberFormat    string
 	colors          *ColorScheme
+	xaxisLegend     string
+	yaxisLegend     string
 }
 
 func NewLineChart(
@@ -44,6 +46,16 @@ func (l *LineChart) SetColorDcheme(colorScheme *ColorScheme) *LineChart {
 	return l
 }
 
+func (l *LineChart) SetXaxisLegend(xaxisLegend string) *LineChart {
+	l.xaxisLegend = xaxisLegend
+	return l
+}
+
+func (l *LineChart) SetYaxisLegend(yaxisLegend string) *LineChart {
+	l.yaxisLegend = yaxisLegend
+	return l
+}
+
 func (l *LineChart) SetNumberFormat(numberFormat string) *LineChart {
 	l.numberFormat = numberFormat
 	fmt.Println(l.colors.Background)
@@ -63,6 +75,7 @@ func (l *LineChart) RenderSVG(w io.Writer) error {
 	const rightMargin = 20
 	const lightAxisColor = "#eee"
 	const darkerAxisColor = "#777"
+	const textHeight = 15
 
 	startSVG(w, l.width, l.height, l.colors)
 	writeFontStyle(w)
@@ -84,8 +97,8 @@ func (l *LineChart) RenderSVG(w io.Writer) error {
 		)
 		fmt.Fprintf(
 			w,
-			"<text x='%f' y='%f' font-size='8pt'>%s</text>",
-			float64(gap),
+			"<text x='%f' y='%f'>%s</text>",
+			float64(gap)+textHeight,
 			convy(hline),
 			labels[i],
 		)
@@ -106,9 +119,9 @@ func (l *LineChart) RenderSVG(w io.Writer) error {
 		)
 		fmt.Fprintf(
 			w,
-			"<text x='%f' y='%f' font-size='8pt' dominant-baseline='middle' text-anchor='middle'>%s</text>",
+			"<text x='%f' y='%f' dominant-baseline='middle' text-anchor='middle'>%s</text>",
 			float64(yaxisWidth+gap)+dw*float64(i),
-			float64(l.height-xaxisHeight/2),
+			float64(l.height-xaxisHeight+gap),
 			l.xaxis[i],
 		)
 	}
@@ -123,6 +136,13 @@ func (l *LineChart) RenderSVG(w io.Writer) error {
 		float64(l.height-xaxisHeight-gap),
 		darkerAxisColor,
 	)
+	fmt.Fprintf(
+		w,
+		"<text x='%f' y='%f' class='axislegend' dominant-baseline='middle' text-anchor='middle'>%s</text>",
+		float64(yaxisWidth+(l.width-yaxisWidth-rightMargin)/2),
+		float64(l.height-xaxisHeight+gap+textHeight),
+		l.xaxisLegend,
+	)
 
 	// yaxis
 	fmt.Fprintf(
@@ -133,6 +153,15 @@ func (l *LineChart) RenderSVG(w io.Writer) error {
 		headerHeight,
 		l.height-xaxisHeight,
 		darkerAxisColor,
+	)
+	fmt.Fprintf(
+		w,
+		"<text x='%f' y='%f' transform='rotate(270, %f, %f)' class='axislegend' text-anchor='middle' alignment-baseline='middle'>%s</text>",
+		float64(textHeight),
+		float64(l.height)/2,
+		float64(textHeight),
+		float64(l.height)/2,
+		l.yaxisLegend,
 	)
 
 	// series

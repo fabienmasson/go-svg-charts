@@ -76,7 +76,7 @@ func yAxisFit(start int, end int, data [][]float64) ([]string, []float64, func(f
 	return labels, lines, conv
 }
 
-func seriesLegend(
+func writeLineSeriesLegend(
 	w io.Writer,
 	width int,
 	markerModulo int,
@@ -106,6 +106,46 @@ func seriesLegend(
 			w,
 			"<text x='%d' y='%d' alignment-baseline='middle'>%s</text>",
 			x, y+2.0,
+			serie,
+		)
+		x += labelwidth + gap
+
+		if x+samplewidth+labelwidth > width {
+			x = 10
+			y += sampleHeight + gap
+		}
+	}
+	legendHeight := y + sampleHeight + gap
+	return legendHeight
+}
+
+func writeBarSeriesLegend(
+	w io.Writer,
+	width int,
+	series []string,
+	colors *ColorScheme) int {
+	const samplewidth = 30
+	const sampleHeight = 15
+	const labelwidth = 70
+	const gap = 5
+
+	x := 10
+	y := 10
+
+	for s, serie := range series {
+
+		fmt.Fprintf(
+			w,
+			"<rect x='%d' y='%d' width='%d' height='%d' fill='%s' />",
+			x, y,
+			samplewidth, sampleHeight,
+			colors.ColorPalette[s%len(colors.ColorPalette)],
+		)
+		x += samplewidth + gap
+		fmt.Fprintf(
+			w,
+			"<text x='%d' y='%d' alignment-baseline='middle'>%s</text>",
+			x, y+sampleHeight/2+2.0,
 			serie,
 		)
 		x += labelwidth + gap

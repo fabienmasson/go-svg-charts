@@ -9,3 +9,6 @@ type ColorScheme struct {
 	Background   string
 	ColorPalette []string
 }
+
+const lightAxisColor = "#eee"
+const darkerAxisColor = "#777"

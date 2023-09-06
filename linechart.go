@@ -79,8 +79,6 @@ func (l *LineChart) RenderSVG(w io.Writer) error {
 	const yaxisWidth = 50
 	const gap = 10
 	const rightMargin = 20
-	const lightAxisColor = "#eee"
-	const darkerAxisColor = "#777"
 	const textHeight = 15
 
 	startSVG(w, l.width, l.height, l.colors)
@@ -89,7 +87,7 @@ func (l *LineChart) RenderSVG(w io.Writer) error {
 	if l.showMarkers {
 		markerModulo = writeDefsMarkers(w, 8.0, len(l.series), l.colors)
 	}
-	headerHeight := seriesLegend(w, l.width, markerModulo, l.series, l.colors)
+	headerHeight := writeLineSeriesLegend(w, l.width, markerModulo, l.series, l.colors)
 
 	// horizontal lines and labels
 	labels, hlines, convy := yAxisFit(headerHeight, l.height-xaxisHeight-gap, l.data)
@@ -174,7 +172,6 @@ func (l *LineChart) RenderSVG(w io.Writer) error {
 	)
 
 	// series
-
 	for s, serie := range l.data {
 		points := ""
 		for i := 0; i < len(serie); i++ {

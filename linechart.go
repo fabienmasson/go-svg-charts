@@ -15,6 +15,7 @@ type LineChart struct {
 	colors          *ColorScheme
 	xaxisLegend     string
 	yaxisLegend     string
+	showMarkers     bool
 }
 
 func NewLineChart(
@@ -67,6 +68,11 @@ func (l *LineChart) SetHorizontalLines(horizontalLines int) *LineChart {
 	return l
 }
 
+func (l *LineChart) SetShowMarkers(showMarkers bool) *LineChart {
+	l.showMarkers = showMarkers
+	return l
+}
+
 func (l *LineChart) RenderSVG(w io.Writer) error {
 
 	const xaxisHeight = 50
@@ -79,7 +85,10 @@ func (l *LineChart) RenderSVG(w io.Writer) error {
 
 	startSVG(w, l.width, l.height, l.colors)
 	writeFontStyle(w)
-	markerModulo := writeDefsMarkers(w, 8.0, len(l.series), l.colors)
+	markerModulo := 7
+	if l.showMarkers {
+		markerModulo = writeDefsMarkers(w, 8.0, len(l.series), l.colors)
+	}
 	headerHeight := seriesLegend(w, l.width, markerModulo, l.series, l.colors)
 
 	// horizontal lines and labels

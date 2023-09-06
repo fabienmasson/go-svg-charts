@@ -104,8 +104,8 @@ func seriesLegend(
 		x += samplewidth + gap
 		fmt.Fprintf(
 			w,
-			"<text x='%d' y='%d'>%s</text>",
-			x, y,
+			"<text x='%d' y='%d' alignment-baseline='middle'>%s</text>",
+			x, y+2.0,
 			serie,
 		)
 		x += labelwidth + gap

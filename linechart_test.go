@@ -31,8 +31,7 @@ func TestLineChart(t *testing.T) {
 		[][]float64{caeq1, caeq2, caeq3, caeq4, caeq5},
 	)
 
-	lc.SetXaxisLegend("Mois")
-	lc.SetYaxisLegend("CA")
+	lc.SetXaxisLegend("Mois").SetYaxisLegend("CA").SetShowMarkers(true)
 
 	file, err := os.Create("linechart.svg")
 	if err != nil {

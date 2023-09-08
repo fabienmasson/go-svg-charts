@@ -20,7 +20,7 @@ type Dimension struct {
 // - slice of line labels
 // - slice of lines y
 // - slice of converted data y
-func yAxisFit(start int, end int, data [][]float64) ([]string, []float64, func(float64) float64) {
+func yAxisFit(start int, end int, data [][]float64, showZero bool) ([]string, []float64, func(float64) float64) {
 	min, max := data[0][0], data[0][0]
 	for i := 0; i < len(data); i++ {
 		for j := 0; j < len(data[i]); j++ {
@@ -31,6 +31,13 @@ func yAxisFit(start int, end int, data [][]float64) ([]string, []float64, func(f
 				max = data[i][j]
 			}
 		}
+	}
+	if min > 0 && showZero {
+		min = 0
+	}
+
+	if max < 0 && showZero {
+		max = 0
 	}
 
 	diff := max - min
@@ -159,11 +166,18 @@ func writeBarSeriesLegend(
 	return legendHeight
 }
 
-func writeFontStyle(w io.Writer) {
-	fmt.Fprintf(
-		w,
-		"<style>text { font-size: 8px; font-family: sans-serif } .axislegend { font-size: 10px; font-weight: bold }</style>",
-	)
+func writeFontStyle(w io.Writer, isInteractive bool) {
+	fmt.Fprintf(w, "<style>")
+	fmt.Fprintf(w, "text { font-size: 8pt; font-family: sans-serif }  ")
+	fmt.Fprintf(w, ".axislegend { font-size: 12pt; font-weight: bold } ")
+	fmt.Fprintf(w, ".hovercircle {z-index:0; cursor:pointer; } ")
+	if isInteractive {
+		fmt.Fprintf(w, ".value {z-index: 1; display:none; background-color: #fff; opacity: 0.7; } ")
+		fmt.Fprintf(w, ".hovercircle:hover + .value { display:block; }")
+	} else {
+		fmt.Fprintf(w, ".value {z-index: 1; background-color: #fff; opacity: 0.7; } ")
+	}
+	fmt.Fprintf(w, "</style>")
 }
 
 func startSVG(w io.Writer, width, height int, colorScheme *ColorScheme) {

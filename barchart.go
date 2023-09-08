@@ -15,6 +15,9 @@ type BarChart struct {
 	colors          *ColorScheme
 	xaxisLegend     string
 	yaxisLegend     string
+	showZero        bool
+	showValues      bool
+	isInteractive   bool
 }
 
 func NewBarChart(
@@ -38,6 +41,9 @@ func NewBarChart(
 		xaxis:           xaxis,
 		series:          series,
 		data:            data,
+		showZero:        true,
+		showValues:      false,
+		isInteractive:   false,
 	}
 }
 
@@ -67,6 +73,20 @@ func (bc *BarChart) SetHorizontalLines(horizontalLines int) *BarChart {
 	return bc
 }
 
+func (bc *BarChart) SetShowZero(showZero bool) *BarChart {
+	bc.showZero = showZero
+	return bc
+}
+
+func (bc *BarChart) SetInteractive(interactive bool) *BarChart {
+	bc.isInteractive = interactive
+	return bc
+}
+func (bc *BarChart) SetShowValue(showValues bool) *BarChart {
+	bc.showValues = showValues
+	return bc
+}
+
 func (bc *BarChart) RenderSVG(w io.Writer) error {
 
 	const xaxisHeight = 50
@@ -77,11 +97,11 @@ func (bc *BarChart) RenderSVG(w io.Writer) error {
 	const barGap = 20
 
 	startSVG(w, bc.width, bc.height, bc.colors)
-	writeFontStyle(w)
+	writeFontStyle(w, bc.isInteractive)
 	headerHeight := writeBarSeriesLegend(w, bc.width, bc.series, bc.colors)
 
 	// horizontal lines and labels
-	labels, hlines, convy := yAxisFit(headerHeight, bc.height-xaxisHeight-gap, bc.data)
+	labels, hlines, convy := yAxisFit(headerHeight, bc.height-xaxisHeight-gap, bc.data, bc.showZero)
 
 	for i, hline := range hlines {
 		fmt.Fprintf(
@@ -175,6 +195,30 @@ func (bc *BarChart) RenderSVG(w io.Writer) error {
 				bw,
 				(float64(bc.height)-xaxisHeight-gap)-convy(serie[i]),
 			)
+		}
+	}
+
+	for s, serie := range bc.data {
+		for i := 0; i < len(serie); i++ {
+			if bc.isInteractive {
+				fmt.Fprintf(
+					w,
+					"<rect class='hovercircle' x='%f' y='%f' width='%f' height='%f' fill-opacity='0' />",
+					float64(yaxisWidth+gap)+dw/2.0+dw*float64(i)-relativeStart+bw*float64(s),
+					convy(serie[i]),
+					bw,
+					(float64(bc.height)-xaxisHeight-gap)-convy(serie[i]),
+				)
+			}
+			if bc.showValues || bc.isInteractive {
+				fmt.Fprintf(
+					w,
+					"<text style='paint-order:stroke fill' class='value' x='%f' y='%f' text-anchor='middle' alignment-baseline='middle' stroke='#fff' stroke-width='10' fill='#555'>%f</text>",
+					float64(yaxisWidth+gap)+dw/2.0+dw*float64(i)-relativeStart+bw*float64(s)+10,
+					convy(serie[i])-10.0,
+					serie[i],
+				)
+			}
 		}
 	}
 

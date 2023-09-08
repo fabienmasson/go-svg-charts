@@ -16,6 +16,8 @@ type LineChart struct {
 	xaxisLegend     string
 	yaxisLegend     string
 	showMarkers     bool
+	showValues      bool
+	isInteractive   bool
 }
 
 func NewLineChart(
@@ -73,6 +75,15 @@ func (l *LineChart) SetShowMarkers(showMarkers bool) *LineChart {
 	return l
 }
 
+func (l *LineChart) SetInteractive(interactive bool) *LineChart {
+	l.isInteractive = interactive
+	return l
+}
+func (l *LineChart) SetShowValue(showValues bool) *LineChart {
+	l.showValues = showValues
+	return l
+}
+
 func (l *LineChart) RenderSVG(w io.Writer) error {
 
 	const xaxisHeight = 50
@@ -82,7 +93,7 @@ func (l *LineChart) RenderSVG(w io.Writer) error {
 	const textHeight = 15
 
 	startSVG(w, l.width, l.height, l.colors)
-	writeFontStyle(w)
+	writeFontStyle(w, l.isInteractive)
 	markerModulo := 7
 	if l.showMarkers {
 		markerModulo = writeDefsMarkers(w, 8.0, len(l.series), l.colors)
@@ -90,7 +101,7 @@ func (l *LineChart) RenderSVG(w io.Writer) error {
 	headerHeight := writeLineSeriesLegend(w, l.width, markerModulo, l.series, l.colors)
 
 	// horizontal lines and labels
-	labels, hlines, convy := yAxisFit(headerHeight, l.height-xaxisHeight-gap, l.data)
+	labels, hlines, convy := yAxisFit(headerHeight, l.height-xaxisHeight-gap, l.data, false)
 
 	for i, hline := range hlines {
 		fmt.Fprintf(
@@ -181,6 +192,7 @@ func (l *LineChart) RenderSVG(w io.Writer) error {
 				convy(serie[i]),
 			)
 		}
+
 		fmt.Fprintf(
 			w,
 			"<polyline points='%s' fill='none' stroke='%s' stroke-width='2' marker-start='url(#dot%d)' marker-mid='url(#dot%d)'  marker-end='url(#dot%d)'/>",
@@ -188,6 +200,31 @@ func (l *LineChart) RenderSVG(w io.Writer) error {
 			l.colors.ColorPalette[s%len(l.colors.ColorPalette)],
 			s%markerModulo, s%markerModulo, s%markerModulo,
 		)
+
+	}
+
+	for _, serie := range l.data {
+
+		for i := 0; i < len(serie); i++ {
+			if l.isInteractive {
+
+				fmt.Fprintf(
+					w,
+					"<circle class='hovercircle' cx='%f' cy='%f' r='15' fill='#fff' fill-opacity='0' />",
+					float64(yaxisWidth+gap)+dw*float64(i),
+					convy(serie[i]),
+				)
+			}
+			if l.isInteractive || l.showValues {
+				fmt.Fprintf(
+					w,
+					"<text style='paint-order:stroke fill' class='value' x='%f' y='%f' text-anchor='middle' alignment-baseline='middle' stroke='#fff' stroke-width='10' fill='#555'>%f</text>",
+					float64(yaxisWidth+gap)+dw*float64(i),
+					convy(serie[i])-10.0,
+					serie[i],
+				)
+			}
+		}
 	}
 
 	endSVG(w)

@@ -31,7 +31,7 @@ func TestBarChart(t *testing.T) {
 		[][]float64{caeq1, caeq2 /*caeq3, caeq4, caeq5*/},
 	).
 		SetXaxisLegend("Mois").
-		SetYaxisLegend("CA")
+		SetYaxisLegend("CA").SetInteractive(true)
 
 	file, err := os.Create("barchart.svg")
 	if err != nil {

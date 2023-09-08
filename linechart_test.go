@@ -20,19 +20,21 @@ func TestLineChart(t *testing.T) {
 		caeq2 = append(caeq2, rand.Float64()*20)
 		caeq3 = append(caeq3, rand.Float64()*25)
 		caeq4 = append(caeq4, rand.Float64()*30)
-		caeq5 = append(caeq5, rand.Float64()*1000000)
+		caeq5 = append(caeq5, rand.Float64()*100)
 	}
 
 	lc := charts.NewLineChart(
 		800,
-		600,
+		800,
 		[]string{"Janvier", "Fevrier", "Mars", "Avril", "Mai", "Juin", "Juillet", "Aout", "Septembre", "Octobre", "Novembre", "Decembre"},
 		[]string{"Equipe 1", "Equipe 2", "Equipe 3", "Equipe 4", "Equipe 5"},
 		[][]float64{caeq1, caeq2, caeq3, caeq4, caeq5},
 	).
 		SetXaxisLegend("Mois").
 		SetYaxisLegend("CA").
-		SetShowMarkers(true)
+		SetShowMarkers(true).
+		SetInteractive(false).
+		SetShowValue(true)
 
 	file, err := os.Create("linechart.svg")
 	if err != nil {

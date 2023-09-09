@@ -84,7 +84,7 @@ func writeLineSeriesLegend(
 	width int,
 	markerModulo int,
 	series []string,
-	colors *ColorScheme) int {
+	colorScheme *ColorScheme) int {
 	const samplewidth = 30
 	const sampleHeight = 15
 	const labelwidth = 70
@@ -101,7 +101,7 @@ func writeLineSeriesLegend(
 			x, y,
 			x+samplewidth/2, y,
 			x+samplewidth, y,
-			colors.ColorPalette[s%len(colors.ColorPalette)],
+			colorScheme.ColorPalette(s),
 			s%markerModulo,
 		)
 		x += samplewidth + gap
@@ -126,7 +126,7 @@ func writeBarSeriesLegend(
 	w io.Writer,
 	width int,
 	series []string,
-	colors *ColorScheme) int {
+	colorScheme *ColorScheme) int {
 	const samplewidth = 30
 	const sampleHeight = 15
 	const labelwidth = 70
@@ -142,7 +142,7 @@ func writeBarSeriesLegend(
 			"<rect x='%d' y='%d' width='%d' height='%d' fill='%s' />",
 			x, y,
 			samplewidth, sampleHeight,
-			colors.ColorPalette[s%len(colors.ColorPalette)],
+			colorScheme.ColorPalette(s),
 		)
 		x += samplewidth + gap
 		fmt.Fprintf(
@@ -185,7 +185,7 @@ func startSVG(w io.Writer, width, height int, colorScheme *ColorScheme) {
 	)
 }
 
-func writeDefsMarkers(w io.Writer, size float64, n int, colors *ColorScheme) int {
+func writeDefsMarkers(w io.Writer, size float64, n int, colorScheme *ColorScheme) int {
 
 	const maxMarkers = 7
 
@@ -205,20 +205,20 @@ func writeDefsMarkers(w io.Writer, size float64, n int, colors *ColorScheme) int
 		)
 		switch i {
 		case 0:
-			fmt.Fprintf(w, "<circle cx='%f' cy='%f' r='%f' fill='%s' />", halfsize, halfsize, halfsize, colors.ColorPalette[i%len(colors.ColorPalette)])
+			fmt.Fprintf(w, "<circle cx='%f' cy='%f' r='%f' fill='%s' />", halfsize, halfsize, halfsize, colorScheme.ColorPalette(i))
 		case 1:
-			fmt.Fprintf(w, "<rect x='0' y='0' width='%f' height='10' fill='%s' />", fullsize, colors.ColorPalette[i%len(colors.ColorPalette)])
+			fmt.Fprintf(w, "<rect x='0' y='0' width='%f' height='10' fill='%s' />", fullsize, colorScheme.ColorPalette(i))
 		case 2:
-			fmt.Fprintf(w, "<polygon points='0,%f %f,0 %f,%f' fill='%s' />", fullsize, halfsize, fullsize, fullsize, colors.ColorPalette[i%len(colors.ColorPalette)])
+			fmt.Fprintf(w, "<polygon points='0,%f %f,0 %f,%f' fill='%s' />", fullsize, halfsize, fullsize, fullsize, colorScheme.ColorPalette(i))
 		case 3:
-			fmt.Fprintf(w, "<line x1='0' y1='0' x2='%f' y2='%f' stroke='%s' stroke-width='1.5'/>", fullsize, fullsize, colors.ColorPalette[i%len(colors.ColorPalette)])
-			fmt.Fprintf(w, "<line x1='0' y1='%f' x2='%f' y2='0' stroke='%s' stroke-width='1.5'/>", fullsize, fullsize, colors.ColorPalette[i%len(colors.ColorPalette)])
+			fmt.Fprintf(w, "<line x1='0' y1='0' x2='%f' y2='%f' stroke='%s' stroke-width='1.5'/>", fullsize, fullsize, colorScheme.ColorPalette(i))
+			fmt.Fprintf(w, "<line x1='0' y1='%f' x2='%f' y2='0' stroke='%s' stroke-width='1.5'/>", fullsize, fullsize, colorScheme.ColorPalette(i))
 		case 4:
-			fmt.Fprintf(w, "<circle cx='%f' cy='%f' r='%f' stroke='%s' stroke-width='1.5' fill='none'/>", halfsize, halfsize, halfsize, colors.ColorPalette[i%len(colors.ColorPalette)])
+			fmt.Fprintf(w, "<circle cx='%f' cy='%f' r='%f' stroke='%s' stroke-width='1.5' fill='none'/>", halfsize, halfsize, halfsize, colorScheme.ColorPalette(i))
 		case 5:
-			fmt.Fprintf(w, "<rect x='0' y='0' width='%f' height='%f' stroke='%s' fill='none' />", fullsize, fullsize, colors.ColorPalette[i%len(colors.ColorPalette)])
+			fmt.Fprintf(w, "<rect x='0' y='0' width='%f' height='%f' stroke='%s' fill='none' />", fullsize, fullsize, colorScheme.ColorPalette(i))
 		case 6:
-			fmt.Fprintf(w, "<polygon points='0,%f %f,0 %f,%f' stroke='%s' fill='none' />", fullsize, halfsize, fullsize, fullsize, colors.ColorPalette[i%len(colors.ColorPalette)])
+			fmt.Fprintf(w, "<polygon points='0,%f %f,0 %f,%f' stroke='%s' fill='none' />", fullsize, halfsize, fullsize, fullsize, colorScheme.ColorPalette(i))
 		}
 
 		fmt.Fprintf(w, "</marker>")

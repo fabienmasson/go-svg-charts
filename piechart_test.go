@@ -14,7 +14,7 @@ func TestPieChart(t *testing.T) {
 	ca := make([]float64, 0)
 	labels := make([]string, 0)
 
-	for i := 0; i < 4; i++ {
+	for i := 0; i < 15; i++ {
 		ca = append(ca, math.Round(rand.Float64()*1000)/100)
 		labels = append(labels, fmt.Sprintf("Team %d", i))
 	}

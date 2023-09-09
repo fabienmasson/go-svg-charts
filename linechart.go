@@ -12,7 +12,7 @@ type LineChart struct {
 	data            [][]float64
 	horizontalLines int
 	numberFormat    string
-	colors          *ColorScheme
+	colorScheme     *ColorScheme
 	xaxisLegend     string
 	yaxisLegend     string
 	showMarkers     bool
@@ -32,11 +32,7 @@ func NewLineChart(
 			width:  width,
 			height: height,
 		},
-		colors: &ColorScheme{
-			Foreground:   "black",
-			Background:   "white",
-			ColorPalette: DefaultPalette,
-		},
+		colorScheme:     &DefaultColorScheme,
 		horizontalLines: 8,
 		xaxis:           xaxis,
 		series:          series,
@@ -45,7 +41,7 @@ func NewLineChart(
 }
 
 func (l *LineChart) SetColorDcheme(colorScheme *ColorScheme) *LineChart {
-	l.colors = colorScheme
+	l.colorScheme = colorScheme
 	return l
 }
 
@@ -61,7 +57,7 @@ func (l *LineChart) SetYaxisLegend(yaxisLegend string) *LineChart {
 
 func (l *LineChart) SetNumberFormat(numberFormat string) *LineChart {
 	l.numberFormat = numberFormat
-	fmt.Println(l.colors.Background)
+	fmt.Println(l.colorScheme.Background)
 	return l
 }
 
@@ -92,13 +88,13 @@ func (l *LineChart) RenderSVG(w io.Writer) error {
 	const rightMargin = 20
 	const textHeight = 15
 
-	startSVG(w, l.width, l.height, l.colors)
+	startSVG(w, l.width, l.height, l.colorScheme)
 	writeFontStyle(w, l.isInteractive)
 	markerModulo := 7
 	if l.showMarkers {
-		markerModulo = writeDefsMarkers(w, 8.0, len(l.series), l.colors)
+		markerModulo = writeDefsMarkers(w, 8.0, len(l.series), l.colorScheme)
 	}
-	headerHeight := writeLineSeriesLegend(w, l.width, markerModulo, l.series, l.colors)
+	headerHeight := writeLineSeriesLegend(w, l.width, markerModulo, l.series, l.colorScheme)
 
 	// horizontal lines and labels
 	labels, hlines, convy := yAxisFit(headerHeight, l.height-xaxisHeight-gap, l.data, false)
@@ -111,7 +107,7 @@ func (l *LineChart) RenderSVG(w io.Writer) error {
 			l.width-rightMargin,
 			convy(hline),
 			convy(hline),
-			lightAxisColor,
+			l.colorScheme.LightAxisColor,
 		)
 		fmt.Fprintf(
 			w,
@@ -133,7 +129,7 @@ func (l *LineChart) RenderSVG(w io.Writer) error {
 			float64(yaxisWidth+gap)+dw*float64(i),
 			headerHeight,
 			l.height-xaxisHeight,
-			lightAxisColor,
+			l.colorScheme.LightAxisColor,
 		)
 		fmt.Fprintf(
 			w,
@@ -152,7 +148,7 @@ func (l *LineChart) RenderSVG(w io.Writer) error {
 		l.width,
 		float64(l.height-xaxisHeight-gap),
 		float64(l.height-xaxisHeight-gap),
-		darkerAxisColor,
+		l.colorScheme.DarkerAxisColor,
 	)
 	fmt.Fprintf(
 		w,
@@ -170,7 +166,7 @@ func (l *LineChart) RenderSVG(w io.Writer) error {
 		float64(yaxisWidth+gap),
 		headerHeight,
 		l.height-xaxisHeight,
-		darkerAxisColor,
+		l.colorScheme.DarkerAxisColor,
 	)
 	fmt.Fprintf(
 		w,
@@ -197,7 +193,7 @@ func (l *LineChart) RenderSVG(w io.Writer) error {
 			w,
 			"<polyline points='%s' fill='none' stroke='%s' stroke-width='2' marker-start='url(#dot%d)' marker-mid='url(#dot%d)'  marker-end='url(#dot%d)'/>",
 			points,
-			l.colors.ColorPalette[s%len(l.colors.ColorPalette)],
+			l.colorScheme.ColorPalette(s),
 			s%markerModulo, s%markerModulo, s%markerModulo,
 		)
 

@@ -14,7 +14,7 @@ type PieChart struct {
 	series        []string
 	data          []float64
 	numberFormat  string
-	colors        *ColorScheme
+	colorScheme   *ColorScheme
 	showValues    bool
 	isInteractive bool
 }
@@ -30,11 +30,7 @@ func NewPieChart(
 			width:  width,
 			height: height,
 		},
-		colors: &ColorScheme{
-			Foreground:   "black",
-			Background:   "white",
-			ColorPalette: DefaultPalette,
-		},
+		colorScheme:   &DefaultColorScheme,
 		series:        series,
 		data:          data,
 		showValues:    false,
@@ -43,7 +39,7 @@ func NewPieChart(
 }
 
 func (pc *PieChart) SetColorDcheme(colorScheme *ColorScheme) *PieChart {
-	pc.colors = colorScheme
+	pc.colorScheme = colorScheme
 	return pc
 }
 
@@ -63,7 +59,7 @@ func (pc *PieChart) SetShowValue(showValues bool) *PieChart {
 
 func (pc *PieChart) RenderSVG(w io.Writer) error {
 
-	startSVG(w, pc.width, pc.height, pc.colors)
+	startSVG(w, pc.width, pc.height, pc.colorScheme)
 	writeFontStyle(w, pc.isInteractive)
 
 	type pieSlice struct {
@@ -92,7 +88,7 @@ func (pc *PieChart) RenderSVG(w io.Writer) error {
 	}
 
 	// series
-	legendfHeight := writeBarSeriesLegend(w, pc.width, sortSeries, pc.colors)
+	legendfHeight := writeBarSeriesLegend(w, pc.width, sortSeries, pc.colorScheme)
 	centerX := float64(pc.width / 2)
 	centerY := float64(pc.height-legendfHeight)/2.0 + float64(legendfHeight)
 	var radius float64
@@ -133,8 +129,8 @@ func (pc *PieChart) RenderSVG(w io.Writer) error {
 			centerY,
 			centerX-pieSlices[i].startX,
 			centerY-pieSlices[i].startY,
-			pc.colors.ColorPalette[i%len(pc.colors.ColorPalette)],
-			pc.colors.Background,
+			pc.colorScheme.ColorPalette(i),
+			pc.colorScheme.Background,
 		)
 	}
 	if pc.showValues {

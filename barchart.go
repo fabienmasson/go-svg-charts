@@ -12,7 +12,7 @@ type BarChart struct {
 	data            [][]float64
 	horizontalLines int
 	numberFormat    string
-	colors          *ColorScheme
+	colorScheme     *ColorScheme
 	xaxisLegend     string
 	yaxisLegend     string
 	showZero        bool
@@ -32,11 +32,7 @@ func NewBarChart(
 			width:  width,
 			height: height,
 		},
-		colors: &ColorScheme{
-			Foreground:   "black",
-			Background:   "white",
-			ColorPalette: DefaultPalette,
-		},
+		colorScheme:     &DefaultColorScheme,
 		horizontalLines: 8,
 		xaxis:           xaxis,
 		series:          series,
@@ -48,7 +44,7 @@ func NewBarChart(
 }
 
 func (bc *BarChart) SetColorDcheme(colorScheme *ColorScheme) *BarChart {
-	bc.colors = colorScheme
+	bc.colorScheme = colorScheme
 	return bc
 }
 
@@ -64,7 +60,7 @@ func (bc *BarChart) SetYaxisLegend(yaxisLegend string) *BarChart {
 
 func (bc *BarChart) SetNumberFormat(numberFormat string) *BarChart {
 	bc.numberFormat = numberFormat
-	fmt.Println(bc.colors.Background)
+	fmt.Println(bc.colorScheme.Background)
 	return bc
 }
 
@@ -96,9 +92,9 @@ func (bc *BarChart) RenderSVG(w io.Writer) error {
 	const textHeight = 15
 	const barGap = 20
 
-	startSVG(w, bc.width, bc.height, bc.colors)
+	startSVG(w, bc.width, bc.height, bc.colorScheme)
 	writeFontStyle(w, bc.isInteractive)
-	headerHeight := writeBarSeriesLegend(w, bc.width, bc.series, bc.colors)
+	headerHeight := writeBarSeriesLegend(w, bc.width, bc.series, bc.colorScheme)
 
 	// horizontal lines and labels
 	labels, hlines, convy := yAxisFit(headerHeight, bc.height-xaxisHeight-gap, bc.data, bc.showZero)
@@ -111,7 +107,7 @@ func (bc *BarChart) RenderSVG(w io.Writer) error {
 			bc.width-rightMargin,
 			convy(hline),
 			convy(hline),
-			lightAxisColor,
+			bc.colorScheme.LightAxisColor,
 		)
 		fmt.Fprintf(
 			w,
@@ -132,7 +128,7 @@ func (bc *BarChart) RenderSVG(w io.Writer) error {
 			float64(yaxisWidth+gap)+dw/2.0+dw*float64(i),
 			headerHeight,
 			bc.height-xaxisHeight,
-			lightAxisColor,
+			bc.colorScheme.LightAxisColor,
 		)
 		fmt.Fprintf(
 			w,
@@ -151,7 +147,7 @@ func (bc *BarChart) RenderSVG(w io.Writer) error {
 		bc.width,
 		float64(bc.height-xaxisHeight-gap),
 		float64(bc.height-xaxisHeight-gap),
-		darkerAxisColor,
+		bc.colorScheme.DarkerAxisColor,
 	)
 	fmt.Fprintf(
 		w,
@@ -169,7 +165,7 @@ func (bc *BarChart) RenderSVG(w io.Writer) error {
 		float64(yaxisWidth+gap),
 		headerHeight,
 		bc.height-xaxisHeight,
-		darkerAxisColor,
+		bc.colorScheme.DarkerAxisColor,
 	)
 	fmt.Fprintf(
 		w,
@@ -191,7 +187,7 @@ func (bc *BarChart) RenderSVG(w io.Writer) error {
 				"<rect x='%f' y='%f' fill='%s' width='%f' height='%f'/>",
 				float64(yaxisWidth+gap)+dw/2.0+dw*float64(i)-relativeStart+bw*float64(s),
 				convy(serie[i]),
-				bc.colors.ColorPalette[s%len(bc.colors.ColorPalette)],
+				bc.colorScheme.ColorPalette(s),
 				bw,
 				(float64(bc.height)-xaxisHeight-gap)-convy(serie[i]),
 			)

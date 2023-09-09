@@ -213,7 +213,7 @@ func (bc *BarChart) RenderSVG(w io.Writer) error {
 			if bc.showValues || bc.isInteractive {
 				fmt.Fprintf(
 					w,
-					"<text style='paint-order:stroke fill' class='value' x='%f' y='%f' text-anchor='middle' alignment-baseline='middle' stroke='#fff' stroke-width='10' fill='#555'>%f</text>",
+					"<text style='paint-order:stroke fill' class='value' x='%f' y='%f' text-anchor='middle' alignment-baseline='middle' stroke='#fff' stroke-width='10' fill='#555'>%g</text>",
 					float64(yaxisWidth+gap)+dw/2.0+dw*float64(i)-relativeStart+bw*float64(s)+10,
 					convy(serie[i])-10.0,
 					serie[i],

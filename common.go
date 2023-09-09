@@ -68,11 +68,7 @@ func yAxisFit(start int, end int, data [][]float64, showZero bool) ([]string, []
 	for {
 		val := float64(int(min/interval)+1+k) * interval
 		if val < max {
-			if val > 1 || val <= -1 {
-				labels = append(labels, fmt.Sprintf("%d", int(val)))
-			} else {
-				labels = append(labels, fmt.Sprintf("%f", val))
-			}
+			labels = append(labels, fmt.Sprintf("%.8g", val))
 			lines = append(lines, val)
 		} else {
 			break

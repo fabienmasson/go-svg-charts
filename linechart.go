@@ -218,7 +218,7 @@ func (l *LineChart) RenderSVG(w io.Writer) error {
 			if l.isInteractive || l.showValues {
 				fmt.Fprintf(
 					w,
-					"<text style='paint-order:stroke fill' class='value' x='%f' y='%f' text-anchor='middle' alignment-baseline='middle' stroke='#fff' stroke-width='10' fill='#555'>%f</text>",
+					"<text style='paint-order:stroke fill' class='value' x='%f' y='%f' text-anchor='middle' alignment-baseline='middle' stroke='#fff' stroke-width='10' fill='#555'>%g</text>",
 					float64(yaxisWidth+gap)+dw*float64(i),
 					convy(serie[i])-10.0,
 					serie[i],

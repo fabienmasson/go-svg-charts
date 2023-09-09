@@ -56,7 +56,7 @@ func yAxisFit(start int, end int, data [][]float64, showZero bool) ([]string, []
 	top := 0.0       // where max value goes
 	bottom := height // where min value goes
 
-	fmt.Printf("top:%f; bottom:%f; start:%d; end: %d; min: %f, max: %f, interval: %f\n", top, bottom, start, end, min, max, interval)
+	//fmt.Printf("top:%f; bottom:%f; start:%d; end: %d; min: %f, max: %f, interval: %f\n", top, bottom, start, end, min, max, interval)
 
 	conv := func(val float64) float64 {
 		return float64(start) + bottom - (bottom-top)*(val-min)/(max-min)

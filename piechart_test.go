@@ -28,7 +28,7 @@ func TestPieChart(t *testing.T) {
 		SetInteractive(false).
 		SetShowValue(true)
 
-	file, err := os.Create("piechart.svg")
+	file, err := os.Create("examples/piechart.svg")
 	if err != nil {
 		t.Errorf("os.Create error: %s", err)
 	}

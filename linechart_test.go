@@ -36,7 +36,7 @@ func TestLineChart(t *testing.T) {
 		SetShowMarkers(true).
 		SetInteractive(true)
 
-	file, err := os.Create("linechart.svg")
+	file, err := os.Create("examples/linechart.svg")
 	if err != nil {
 		t.Errorf("os.Create error: %s", err)
 	}

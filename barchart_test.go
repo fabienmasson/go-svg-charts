@@ -33,7 +33,7 @@ func TestBarChart(t *testing.T) {
 		SetXaxisLegend("Month").
 		SetYaxisLegend("Net growth").SetInteractive(true)
 
-	file, err := os.Create("barchart.svg")
+	file, err := os.Create("examples/barchart.svg")
 	if err != nil {
 		t.Errorf("os.Create error: %s", err)
 	}

@@ -28,7 +28,7 @@ func TestTreemapChart(t *testing.T) {
 		SetInteractive(false).
 		SetShowValue(true)
 
-	file, err := os.Create("treemapchart.svg")
+	file, err := os.Create("examples/treemapchart.svg")
 	if err != nil {
 		t.Errorf("os.Create error: %s", err)
 	}

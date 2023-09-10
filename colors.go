@@ -34,7 +34,7 @@ func defaultColorPalette(i int) string {
 	s := 0.5
 	l := 0.5
 	h, _, _ := rGBToHSL(0, 0, 255)
-	h = float64((int(h) + int(i)*43) % 360)
+	h = float64((int(h) + int(i)*69) % 360)
 	r, g, b, _ := hSLToRGB(h, s, l)
 	return fmt.Sprintf("#%02X%02X%02X", r, g, b)
 }

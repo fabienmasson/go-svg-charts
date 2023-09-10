@@ -25,13 +25,13 @@ func TestBarChart(t *testing.T) {
 
 	lc := charts.NewBarChart(
 		800,
-		600,
-		[]string{"Janvier", "Fevrier", "Mars", "Avril", "Mai", "Juin", "Juillet", "Aout", "Septembre", "Octobre", "Novembre", "Decembre"},
-		[]string{"Equipe 1", "Equipe 2" /*"Equipe 3", "Equipe 4", "Equipe 5"*/},
+		500,
+		[]string{"Jan", "Feb", "Mar", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"},
+		[]string{"Team 1", "Team 2" /*"Team 3", "Team 4", "Team 5"*/},
 		[][]float64{caeq1, caeq2 /*caeq3, caeq4, caeq5*/},
 	).
-		SetXaxisLegend("Mois").
-		SetYaxisLegend("CA").SetInteractive(true)
+		SetXaxisLegend("Month").
+		SetYaxisLegend("Net growth").SetInteractive(true)
 
 	file, err := os.Create("barchart.svg")
 	if err != nil {

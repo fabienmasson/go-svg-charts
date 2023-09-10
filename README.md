@@ -40,5 +40,7 @@ go get https://git.trankiloubilou.fr/fabien/charts
 ![pie chart bezier](https://git.trankiloubilou.fr/fabien/charts/raw/branch/main/examples/areachartbezier.svg)
 ### heat map
 ![Heat map](https://git.trankiloubilou.fr/fabien/charts/raw/branch/main/examples/heatmap.svg)
+### Geographic map
+![Geo map](https://git.trankiloubilou.fr/fabien/charts/raw/branch/main/examples/geomap.svg)
 
 

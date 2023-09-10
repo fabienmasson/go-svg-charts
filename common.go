@@ -10,6 +10,11 @@ type Dimension struct {
 	width, height int
 }
 
+type BezierPoint struct {
+	x, y                                         float64
+	beforeCtlx, beforeCtly, afterCtlx, afterCtly float64
+}
+
 // yAxisDimensions calculates the y-axis dimensions for a given height and data.
 //
 // Parameters:

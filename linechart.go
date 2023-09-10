@@ -18,6 +18,7 @@ type LineChart struct {
 	showMarkers     bool
 	showValues      bool
 	isInteractive   bool
+	isBezier        bool
 }
 
 func NewLineChart(
@@ -79,6 +80,10 @@ func (l *LineChart) SetShowValue(showValues bool) *LineChart {
 	l.showValues = showValues
 	return l
 }
+func (l *LineChart) SetBezier(isBezier bool) *LineChart {
+	l.isBezier = isBezier
+	return l
+}
 
 func (l *LineChart) RenderSVG(w io.Writer) error {
 
@@ -120,13 +125,16 @@ func (l *LineChart) RenderSVG(w io.Writer) error {
 
 	// vertical lines
 	dw := float64(l.width-yaxisWidth-gap*2-rightMargin) / float64(len(l.xaxis)-1)
+	convx := func(x float64) float64 {
+		return float64(yaxisWidth+gap) + dw*x
+	}
 	for i := 0; i < len(l.xaxis); i++ {
 
 		fmt.Fprintf(
 			w,
 			"<line x1='%f' x2='%f' y1='%d' y2='%d' stroke='%s' stroke-width='1'/>",
-			float64(yaxisWidth+gap)+dw*float64(i),
-			float64(yaxisWidth+gap)+dw*float64(i),
+			convx(float64(i)),
+			convx(float64(i)),
 			headerHeight,
 			l.height-xaxisHeight,
 			l.colorScheme.LightAxisColor,
@@ -134,7 +142,7 @@ func (l *LineChart) RenderSVG(w io.Writer) error {
 		fmt.Fprintf(
 			w,
 			"<text x='%f' y='%f' dominant-baseline='middle' text-anchor='middle'>%s</text>",
-			float64(yaxisWidth+gap)+dw*float64(i),
+			convx(float64(i)),
 			float64(l.height-xaxisHeight+gap),
 			l.xaxis[i],
 		)
@@ -179,24 +187,76 @@ func (l *LineChart) RenderSVG(w io.Writer) error {
 	)
 
 	// series
-	for s, serie := range l.data {
-		points := ""
-		for i := 0; i < len(serie); i++ {
+	if l.isBezier {
+		for s, serie := range l.data {
+			bezierPoints := make([]*BezierPoint, 0)
+			for i := 0; i < len(serie); i++ {
+				bezierPoint := BezierPoint{
+					x:          convx(float64(i)),
+					y:          convy(serie[i]),
+					beforeCtlx: convx(float64(i) - 0.25),
+					afterCtlx:  convx(float64(i) + 0.25),
+				}
+				bezierPoints = append(bezierPoints, &bezierPoint)
+			}
+			for i := 1; i < len(serie)-1; i++ {
+				bezierPoints[i].beforeCtly = convy(serie[i] - (serie[i+1]-serie[i-1])/8.0)
+			}
+			bezierPoints[0].afterCtly = bezierPoints[1].beforeCtly
+			bezierPoints[len(serie)-1].beforeCtly = bezierPoints[len(serie)-2].afterCtly
+
+			points := ""
 			points += fmt.Sprintf(
-				"%f,%f ",
-				float64(yaxisWidth+gap)+dw*float64(i),
-				convy(serie[i]),
+				"M%f %f C %f %f,",
+				bezierPoints[0].x,
+				bezierPoints[0].y,
+				bezierPoints[0].afterCtlx,
+				bezierPoints[0].afterCtly,
 			)
+			for i := 1; i < len(bezierPoints); i++ {
+				// start point
+				points += fmt.Sprintf(
+					" %f %f, %f %f ",
+					bezierPoints[i].beforeCtlx,
+					bezierPoints[i].beforeCtly,
+					bezierPoints[i].x,
+					bezierPoints[i].y,
+				)
+				// start control point
+				if i < len(bezierPoints)-1 {
+					points += fmt.Sprintf("S")
+				}
+			}
+
+			fmt.Fprintf(
+				w,
+				"<path d='%s' fill='none' stroke='%s' stroke-width='2' marker-start='url(#dot%d)' marker-mid='url(#dot%d)'  marker-end='url(#dot%d)'/>",
+				points,
+				l.colorScheme.ColorPalette(s),
+				s%markerModulo, s%markerModulo, s%markerModulo,
+			)
+
 		}
+	} else {
+		for s, serie := range l.data {
+			points := ""
+			for i := 0; i < len(serie); i++ {
+				points += fmt.Sprintf(
+					"%f,%f ",
+					float64(yaxisWidth+gap)+dw*float64(i),
+					convy(serie[i]),
+				)
+			}
 
-		fmt.Fprintf(
-			w,
-			"<polyline points='%s' fill='none' stroke='%s' stroke-width='2' marker-start='url(#dot%d)' marker-mid='url(#dot%d)'  marker-end='url(#dot%d)'/>",
-			points,
-			l.colorScheme.ColorPalette(s),
-			s%markerModulo, s%markerModulo, s%markerModulo,
-		)
+			fmt.Fprintf(
+				w,
+				"<polyline points='%s' fill='none' stroke='%s' stroke-width='2' marker-start='url(#dot%d)' marker-mid='url(#dot%d)'  marker-end='url(#dot%d)'/>",
+				points,
+				l.colorScheme.ColorPalette(s),
+				s%markerModulo, s%markerModulo, s%markerModulo,
+			)
 
+		}
 	}
 
 	for _, serie := range l.data {

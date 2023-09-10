@@ -18,7 +18,7 @@ go get https://git.trankiloubilou.fr/fabien/charts
 - [ ] Bubble chart
 - [ ] Geographic map
 - [ ] Radar chart
-- [ ] Heat map
+- [x] Heat map
 
 ## Examples
 ### Line chart
@@ -30,5 +30,5 @@ go get https://git.trankiloubilou.fr/fabien/charts
 ### Pie chart
 ![pie chart](https://git.trankiloubilou.fr/fabien/charts/raw/branch/main/examples/piechart.svg)
 ### area chart
-![pie chart](https://git.trankiloubilou.fr/fabien/charts/raw/branch/main/examples/aerachart.svg)
-![pie chart bezier](https://git.trankiloubilou.fr/fabien/charts/raw/branch/main/examples/aerachartbezier.svg)
+![pie chart](https://git.trankiloubilou.fr/fabien/charts/raw/branch/main/examples/areachart.svg)
+![pie chart bezier](https://git.trankiloubilou.fr/fabien/charts/raw/branch/main/examples/areachartbezier.svg)

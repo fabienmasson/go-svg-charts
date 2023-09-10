@@ -19,3 +19,6 @@ go get https://git.trankiloubilou.fr/fabien/charts
 - [ ] Geographic map
 - [ ] Radar chart
 - [ ] Heat map
+
+## Examples
+![treemap](https://git.trankiloubilou.fr/fabien/charts/raw/branch/main/examples/treemapchart.svg)

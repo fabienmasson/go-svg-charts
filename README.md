@@ -32,3 +32,5 @@ go get https://git.trankiloubilou.fr/fabien/charts
 ### area chart
 ![pie chart](https://git.trankiloubilou.fr/fabien/charts/raw/branch/main/examples/areachart.svg)
 ![pie chart bezier](https://git.trankiloubilou.fr/fabien/charts/raw/branch/main/examples/areachartbezier.svg)
+### heat map
+![Heat map](https://git.trankiloubilou.fr/fabien/charts/raw/branch/main/examples/heatmap.svg)

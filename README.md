@@ -21,4 +21,6 @@ go get https://git.trankiloubilou.fr/fabien/charts
 - [ ] Heat map
 
 ## Examples
+![line chart](https://git.trankiloubilou.fr/fabien/charts/raw/branch/main/examples/linechart.svg)
+![bar chart](https://git.trankiloubilou.fr/fabien/charts/raw/branch/main/examples/barchart.svg)
 ![treemap](https://git.trankiloubilou.fr/fabien/charts/raw/branch/main/examples/treemapchart.svg)

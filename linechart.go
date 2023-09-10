@@ -95,6 +95,8 @@ func (l *LineChart) RenderSVG(w io.Writer) error {
 
 	startSVG(w, l.width, l.height, l.colorScheme)
 	writeFontStyle(w, l.isInteractive)
+	writeDefsTxtBg(w, l.colorScheme)
+
 	markerModulo := 7
 	if l.showMarkers {
 		markerModulo = writeDefsMarkers(w, 8.0, len(l.series), l.colorScheme)
@@ -274,7 +276,7 @@ func (l *LineChart) RenderSVG(w io.Writer) error {
 			if l.isInteractive || l.showValues {
 				fmt.Fprintf(
 					w,
-					"<text style='paint-order:stroke fill' class='value' x='%f' y='%f' text-anchor='middle' alignment-baseline='middle' stroke='#fff' stroke-width='10' fill='#555'>%g</text>",
+					"<text style='paint-order:stroke fill' class='value' x='%f' y='%f' text-anchor='middle' alignment-baseline='middle' filter='url(#textbg)'>%g</text>",
 					convx(float64(i)),
 					convy(serie[i])-10.0,
 					serie[i],

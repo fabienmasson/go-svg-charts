@@ -107,6 +107,7 @@ func (ac *AeraChart) RenderSVG(w io.Writer) error {
 	const textHeight = 15
 
 	startSVG(w, ac.width, ac.height, ac.colorScheme)
+	writeDefsTxtBg(w, ac.colorScheme)
 	writeFontStyle(w, ac.isInteractive)
 	markerModulo := 7
 	if ac.showMarkers {
@@ -417,7 +418,7 @@ func (ac *AeraChart) RenderSVG(w io.Writer) error {
 			if ac.isInteractive || ac.showValues {
 				fmt.Fprintf(
 					w,
-					"<text style='paint-order:stroke fill' class='value' x='%f' y='%f' text-anchor='middle' alignment-baseline='middle' stroke='#fff' stroke-width='10' fill='#555'>%g</text>",
+					"<text style='paint-order:stroke fill' class='value' x='%f' y='%f' text-anchor='middle' alignment-baseline='middle' filter='url(#textbg)'>%g</text>",
 					convx(float64(i)),
 					convy(serie[i])-10.0,
 					serie[i],

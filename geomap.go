@@ -159,6 +159,7 @@ func (gm *GeoMap) RenderSVG(w io.Writer) error {
 				}
 			}
 			startSVG(w, width, height, gm.colorScheme)
+			writeDefsTxtBg(w, gm.colorScheme)
 			writeFontStyle(w, gm.isInteractive)
 			gm.styleSVG(w)
 			for _, node := range n.Nodes {
@@ -191,19 +192,11 @@ func (gm *GeoMap) RenderSVG(w io.Writer) error {
 						if strings.ToUpper(attr.Name.Local) != "ID" {
 							fmt.Fprintf(labelBuffer, "%s=\"%s\" ", attr.Name.Local, attr.Value)
 						}
-						if attr.Name.Local == "d" {
-							attr.Value = strings.ReplaceAll(attr.Value, "m", "")
-							attr.Value = strings.Trim(attr.Value, " ")
-							arr := strings.FieldsFunc(attr.Value, splitfn)
-							labelx, _ = strconv.ParseFloat(arr[0], 64)
-							labely, _ = strconv.ParseFloat(arr[1], 64)
-							fmt.Println(arr[0], arr[1], labelx, labely)
-						}
 					}
 					fmt.Fprint(labelBuffer, "/>")
 					fmt.Fprintf(
 						labelBuffer,
-						"<text style='paint-order:stroke fill' class='value' text-anchor='middle' alignment-baseline='middle' stroke='#fff' stroke-width='10' fill='#000' x='%f' y='%f'>%s (%g)</text>",
+						"<text style='paint-order:stroke fill' class='value' text-anchor='middle' alignment-baseline='middle' filter='url(#textbg)' x='%f' y='%f'>%s (%g)</text>",
 						labelx,
 						labely,
 						name,
@@ -241,10 +234,12 @@ func (hm *GeoMap) styleSVG(w io.Writer) error {
 	}
 
 	fmt.Fprint(w, "<style> ")
-	fmt.Fprintf(w, " path { fill: %s; stroke: %s; stroke-width: 0.5; } \n",
-		hm.colorScheme.Background,
-		hm.colorScheme.LightAxisColor,
-	)
+	/*
+		fmt.Fprintf(w, " path { fill: %s; stroke: %s; stroke-width: 0.5; } \n",
+			hm.colorScheme.Background,
+			hm.colorScheme.LightAxisColor,
+		)
+	*/
 	for k, v := range hm.data {
 
 		fmt.Fprintf(w, " path[id='%s'] { fill: %s;  fill-opacity: %f; } \n",

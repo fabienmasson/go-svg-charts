@@ -169,12 +169,12 @@ func writeFontStyle(w io.Writer, isInteractive bool) {
 	fmt.Fprintf(w, "<style>")
 	fmt.Fprintf(w, "text { font-size: 8pt; font-family: sans-serif }  ")
 	fmt.Fprintf(w, ".axislegend { font-size: 12pt; font-weight: bold } ")
-	fmt.Fprintf(w, ".hovercircle {z-index:0; cursor:pointer; } ")
+	fmt.Fprintf(w, ".hovercircle {z-index:0; cursor:pointer; fill:'none'; stroke:'none'; } ")
 	if isInteractive {
-		fmt.Fprintf(w, ".value {z-index: 1; display:none; background-color: #fff; opacity: 1; } ")
+		fmt.Fprintf(w, ".value {z-index: 1; display:none; } ")
 		fmt.Fprintf(w, ".hovercircle:hover + .value, .value:hover { display:block; }")
 	} else {
-		fmt.Fprintf(w, ".value {z-index: 1; background-color: #fff; opacity: 1; } ")
+		fmt.Fprintf(w, ".value {z-index: 1; } ")
 	}
 	fmt.Fprintf(w, "</style>")
 }
@@ -188,6 +188,17 @@ func startSVG(w io.Writer, width, height int, colorScheme *ColorScheme) {
 	)
 }
 
+func writeDefsTxtBg(w io.Writer, colorScheme *ColorScheme) {
+	fmt.Fprintf(w, "<defs>")
+	fmt.Fprintf(w, `<filter x='0' y='0' width='1' height='1' id='textbg'>
+						<feFlood flood-color='%s' result='bg' />
+						<feMerge>
+							<feMergeNode in='bg'/>
+							<feMergeNode in='SourceGraphic'/>
+						</feMerge>
+					</filter>`, colorScheme.Background)
+	fmt.Fprintf(w, "</defs>")
+}
 func writeDefsMarkers(w io.Writer, size float64, n int, colorScheme *ColorScheme) int {
 
 	const maxMarkers = 7
@@ -197,6 +208,7 @@ func writeDefsMarkers(w io.Writer, size float64, n int, colorScheme *ColorScheme
 
 	// marker
 	fmt.Fprintf(w, "<defs>")
+
 	for i := 0; i < n && i < 7; i++ {
 		fmt.Fprintf(
 			w,

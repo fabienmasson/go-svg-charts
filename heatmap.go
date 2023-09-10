@@ -79,6 +79,7 @@ func (hm *HeatMap) RenderSVG(w io.Writer) error {
 
 	startSVG(w, hm.width, hm.height, hm.colorScheme)
 	writeFontStyle(w, hm.isInteractive)
+	writeDefsTxtBg(w, hm.colorScheme)
 
 	chartHeight := float64(hm.height) - float64(xaxisHeight) - 2.0*gap
 	chartWidth := float64(hm.width) - float64(yaxisWidth) - gap*2.0
@@ -208,7 +209,7 @@ func (hm *HeatMap) RenderSVG(w io.Writer) error {
 			if hm.showValues || hm.isInteractive {
 				fmt.Fprintf(
 					w,
-					"<text style='paint-order:stroke fill' class='value' x='%f' y='%f' text-anchor='middle' alignment-baseline='middle' stroke='#fff' stroke-width='10' fill='#555'>%g</text>",
+					"<text style='paint-order:stroke fill' class='value' x='%f' y='%f' text-anchor='middle' alignment-baseline='middle' filter='url(#textbg)'>%g</text>",
 					convxmiddle(i),
 					convymiddle(j),
 					hm.data[i][j],

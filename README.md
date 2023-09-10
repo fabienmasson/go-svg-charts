@@ -24,3 +24,4 @@ go get https://git.trankiloubilou.fr/fabien/charts
 ![line chart](https://git.trankiloubilou.fr/fabien/charts/raw/branch/main/examples/linechart.svg)
 ![bar chart](https://git.trankiloubilou.fr/fabien/charts/raw/branch/main/examples/barchart.svg)
 ![treemap](https://git.trankiloubilou.fr/fabien/charts/raw/branch/main/examples/treemapchart.svg)
+![pie chart](https://git.trankiloubilou.fr/fabien/charts/raw/branch/main/examples/piechart.svg)

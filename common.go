@@ -171,10 +171,10 @@ func writeFontStyle(w io.Writer, isInteractive bool) {
 	fmt.Fprintf(w, ".axislegend { font-size: 12pt; font-weight: bold } ")
 	fmt.Fprintf(w, ".hovercircle {z-index:0; cursor:pointer; } ")
 	if isInteractive {
-		fmt.Fprintf(w, ".value {z-index: 1; display:none; background-color: #fff; opacity: 0.7; } ")
+		fmt.Fprintf(w, ".value {z-index: 1; display:none; background-color: #fff; opacity: 1; } ")
 		fmt.Fprintf(w, ".hovercircle:hover + .value, .value:hover { display:block; }")
 	} else {
-		fmt.Fprintf(w, ".value {z-index: 1; background-color: #fff; opacity: 0.7; } ")
+		fmt.Fprintf(w, ".value {z-index: 1; background-color: #fff; opacity: 1; } ")
 	}
 	fmt.Fprintf(w, "</style>")
 }
@@ -182,7 +182,7 @@ func writeFontStyle(w io.Writer, isInteractive bool) {
 func startSVG(w io.Writer, width, height int, colorScheme *ColorScheme) {
 	fmt.Fprintf(
 		w,
-		"<svg varsion='1.1' xmlns='http://www.w3.org/2000/svg' width='%d' height='%d'>",
+		"<svg version='1.1' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 %d %d'>",
 		width,
 		height,
 	)

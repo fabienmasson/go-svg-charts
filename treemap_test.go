@@ -21,7 +21,7 @@ func TestTreemapChart(t *testing.T) {
 
 	tm := charts.NewTreemapChart(
 		800,
-		500,
+		400,
 		labels,
 		ca,
 	).

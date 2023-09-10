@@ -20,8 +20,8 @@ func TestPieChart(t *testing.T) {
 	}
 
 	lc := charts.NewPieChart(
-		500,
-		500,
+		800,
+		400,
 		labels,
 		ca,
 	).

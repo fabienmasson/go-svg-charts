@@ -26,7 +26,7 @@ func TestAreaChart(t *testing.T) {
 
 	lc := charts.NewAreaChart(
 		800,
-		500,
+		400,
 		[]string{"Jan", "Feb", "Mar", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"},
 		[]string{"Team 1", "Team 2", "Team 3", "Team 4", "Team 5"},
 		[][]float64{caeq1, caeq2, caeq3, caeq4, caeq5},
@@ -64,7 +64,7 @@ func TestAreaChartBezier(t *testing.T) {
 
 	lc := charts.NewAreaChart(
 		800,
-		500,
+		400,
 		[]string{"Jan", "Feb", "Mar", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"},
 		[]string{"Team 1", "Team 2", "Team 3", "Team 4", "Team 5"},
 		[][]float64{caeq1, caeq2, caeq3, caeq4, caeq5},

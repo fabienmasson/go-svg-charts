@@ -32,7 +32,7 @@ func TestHeatMap(t *testing.T) {
 
 	lc := charts.NewHeatMap(
 		800,
-		800,
+		400,
 		months, days, activity,
 	).
 		SetXaxisLegend("Month").

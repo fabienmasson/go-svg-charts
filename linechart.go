@@ -202,8 +202,8 @@ func (l *LineChart) RenderSVG(w io.Writer) error {
 			for i := 1; i < len(serie)-1; i++ {
 				bezierPoints[i].beforeCtly = convy(serie[i] - (serie[i+1]-serie[i-1])/8.0)
 			}
-			bezierPoints[0].afterCtly = bezierPoints[1].beforeCtly
-			bezierPoints[len(serie)-1].beforeCtly = bezierPoints[len(serie)-2].afterCtly
+			bezierPoints[0].afterCtly = bezierPoints[0].y
+			bezierPoints[len(serie)-1].beforeCtly = bezierPoints[len(serie)-1].y
 
 			points := ""
 			points += fmt.Sprintf(
@@ -267,7 +267,7 @@ func (l *LineChart) RenderSVG(w io.Writer) error {
 				fmt.Fprintf(
 					w,
 					"<circle class='hovercircle' cx='%f' cy='%f' r='15' fill='#fff' fill-opacity='0' />",
-					float64(yaxisWidth+gap)+dw*float64(i),
+					convx(float64(i)),
 					convy(serie[i]),
 				)
 			}
@@ -275,7 +275,7 @@ func (l *LineChart) RenderSVG(w io.Writer) error {
 				fmt.Fprintf(
 					w,
 					"<text style='paint-order:stroke fill' class='value' x='%f' y='%f' text-anchor='middle' alignment-baseline='middle' stroke='#fff' stroke-width='10' fill='#555'>%g</text>",
-					float64(yaxisWidth+gap)+dw*float64(i),
+					convx(float64(i)),
 					convy(serie[i])-10.0,
 					serie[i],
 				)

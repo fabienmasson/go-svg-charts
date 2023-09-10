@@ -14,7 +14,7 @@ go get https://git.trankiloubilou.fr/fabien/charts
 - [x] Bar charts
 - [x] Treemap
 - [x] Pie chart
-- [ ] Stacked area chart
+- [x] Stacked area chart
 - [ ] Bubble chart
 - [ ] Geographic map
 - [ ] Radar chart
@@ -29,3 +29,6 @@ go get https://git.trankiloubilou.fr/fabien/charts
 ![treemap](https://git.trankiloubilou.fr/fabien/charts/raw/branch/main/examples/treemapchart.svg)
 ### Pie chart
 ![pie chart](https://git.trankiloubilou.fr/fabien/charts/raw/branch/main/examples/piechart.svg)
+### area chart
+![pie chart](https://git.trankiloubilou.fr/fabien/charts/raw/branch/main/examples/aerachart.svg)
+![pie chart bezier](https://git.trankiloubilou.fr/fabien/charts/raw/branch/main/examples/aerachartbezier.svg)

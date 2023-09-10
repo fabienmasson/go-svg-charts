@@ -21,7 +21,11 @@ go get https://git.trankiloubilou.fr/fabien/charts
 - [ ] Heat map
 
 ## Examples
+### Line chart
 ![line chart](https://git.trankiloubilou.fr/fabien/charts/raw/branch/main/examples/linechart.svg)
+### Bar chart
 ![bar chart](https://git.trankiloubilou.fr/fabien/charts/raw/branch/main/examples/barchart.svg)
+### Tree map
 ![treemap](https://git.trankiloubilou.fr/fabien/charts/raw/branch/main/examples/treemapchart.svg)
+### Pie chart
 ![pie chart](https://git.trankiloubilou.fr/fabien/charts/raw/branch/main/examples/piechart.svg)

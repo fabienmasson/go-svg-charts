@@ -32,8 +32,7 @@ go get https://git.trankiloubilou.fr/fabien/charts
 
 - [x] Automatic color
 - [ ] logarithmique scale
-- [ ] categorical scale
-- [ ] number format
+- [ ] number/date format
 - [ ] export to svg
 - [ ] export to png
 

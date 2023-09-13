@@ -1,10 +1,10 @@
 # Go svg charts
 
-Charts is a golang library for creating pure SVG charts.
+A golang library for pure SVG charts.
 
 ## Credits
 
-This maps are based on the work of MapSVG.
+The maps are based on the work of MapSVG.
 
 The original map is available [here](https://mapsvg.com/maps/austria) under the [Creative Commons Attribution 4.0 International license](https://creativecommons.org/licenses/by/4.0/).
 

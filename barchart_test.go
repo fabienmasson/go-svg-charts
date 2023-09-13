@@ -4,7 +4,8 @@ import (
 	"math/rand"
 	"os"
 	"testing"
-	"trankiloubilou/charts"
+
+	charts "github.com/fabienmasson/go-svg-charts"
 )
 
 func TestBarChart(t *testing.T) {

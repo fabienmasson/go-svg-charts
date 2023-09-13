@@ -84,7 +84,7 @@ func (bc *BarChart) SetShowValue(showValues bool) *BarChart {
 }
 
 func (bc *BarChart) RenderSVG(w io.Writer) error {
-
+	
 	const xaxisHeight = 50
 	const yaxisWidth = 50
 	const gap = 10

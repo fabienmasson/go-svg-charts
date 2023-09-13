@@ -1,6 +1,6 @@
-module trankiloubilou/charts
+module github.com/fabienmasson/go-svg-charts
 
-go 1.21.0
+go 1.21
 
 require (
 )

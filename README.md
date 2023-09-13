@@ -16,6 +16,8 @@ go get https://git.trankiloubilou.fr/fabien/charts
 
 ## Roadmap
 
+### Chart types
+
 - [x] Line charts
 - [x] Bar charts
 - [x] Treemap
@@ -25,6 +27,14 @@ go get https://git.trankiloubilou.fr/fabien/charts
 - [x] Geographic map
 - [ ] Radar chart
 - [x] Heat map
+
+### Features
+
+- [x] Automatic color
+- [ ] logarithmique scale
+- [ ] number/date format
+- [ ] export to svg
+- [ ] export to png
 
 ## Examples
 ### Line chart

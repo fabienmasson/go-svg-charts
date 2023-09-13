@@ -80,6 +80,7 @@ func (hm *HeatMap) RenderSVG(w io.Writer) error {
 	startSVG(w, hm.width, hm.height, hm.colorScheme)
 	writeFontStyle(w, hm.isInteractive)
 	writeDefsTxtBg(w, hm.colorScheme)
+	writeBackground(w, hm.width, hm.height, hm.colorScheme)
 
 	chartHeight := float64(hm.height) - float64(xaxisHeight) - 2.0*gap
 	chartWidth := float64(hm.width) - float64(yaxisWidth) - gap*2.0

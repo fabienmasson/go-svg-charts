@@ -161,6 +161,8 @@ func (gm *GeoMap) RenderSVG(w io.Writer) error {
 			startSVG(w, width, height, gm.colorScheme)
 			writeDefsTxtBg(w, gm.colorScheme)
 			writeFontStyle(w, gm.isInteractive)
+			writeBackground(w, width, height, gm.colorScheme)
+
 			gm.styleSVG(w)
 			for _, node := range n.Nodes {
 				fmt.Fprint(w, "<path ")

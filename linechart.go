@@ -96,6 +96,7 @@ func (l *LineChart) RenderSVG(w io.Writer) error {
 	startSVG(w, l.width, l.height, l.colorScheme)
 	writeFontStyle(w, l.isInteractive)
 	writeDefsTxtBg(w, l.colorScheme)
+	writeBackground(w, l.width, l.height, l.colorScheme)
 
 	markerModulo := 7
 	if l.showMarkers {

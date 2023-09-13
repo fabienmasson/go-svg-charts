@@ -84,7 +84,7 @@ func (bc *BarChart) SetShowValue(showValues bool) *BarChart {
 }
 
 func (bc *BarChart) RenderSVG(w io.Writer) error {
-	
+
 	const xaxisHeight = 50
 	const yaxisWidth = 50
 	const gap = 10
@@ -95,6 +95,8 @@ func (bc *BarChart) RenderSVG(w io.Writer) error {
 	startSVG(w, bc.width, bc.height, bc.colorScheme)
 	writeFontStyle(w, bc.isInteractive)
 	writeDefsTxtBg(w, bc.colorScheme)
+	writeBackground(w, bc.width, bc.height, bc.colorScheme)
+
 	headerHeight := writeBarSeriesLegend(w, bc.width, bc.series, bc.colorScheme)
 
 	// horizontal lines and labels

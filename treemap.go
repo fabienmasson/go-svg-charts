@@ -181,6 +181,7 @@ func (tm *TreemapChart) RenderSVG(w io.Writer) error {
 
 	startSVG(w, tm.width, tm.height, tm.colorScheme)
 	writeFontStyle(w, tm.isInteractive)
+	writeBackground(w, tm.width, tm.height, tm.colorScheme)
 
 	tmSlices := make([]tmSlice, len(tm.data))
 	total := 0.0

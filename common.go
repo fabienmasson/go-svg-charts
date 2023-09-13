@@ -15,6 +15,10 @@ type BezierPoint struct {
 	beforeCtlx, beforeCtly, afterCtlx, afterCtly float64
 }
 
+func writeBackground(w io.Writer, width, height int, colorScheme *ColorScheme) {
+	fmt.Fprintf(w, "<rect x='0' y='0' width='%d' height='%d' fill='%s' />", width, height, colorScheme.Background)
+}
+
 // yAxisDimensions calculates the y-axis dimensions for a given height and data.
 //
 // Parameters:

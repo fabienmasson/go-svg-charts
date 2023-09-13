@@ -61,6 +61,7 @@ func (pc *PieChart) RenderSVG(w io.Writer) error {
 
 	startSVG(w, pc.width, pc.height, pc.colorScheme)
 	writeFontStyle(w, pc.isInteractive)
+	writeBackground(w, pc.width, pc.height, pc.colorScheme)
 
 	type pieSlice struct {
 		value          float64

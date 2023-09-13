@@ -109,6 +109,8 @@ func (ac *AeraChart) RenderSVG(w io.Writer) error {
 	startSVG(w, ac.width, ac.height, ac.colorScheme)
 	writeDefsTxtBg(w, ac.colorScheme)
 	writeFontStyle(w, ac.isInteractive)
+	writeBackground(w, ac.width, ac.height, ac.colorScheme)
+
 	markerModulo := 7
 	if ac.showMarkers {
 		markerModulo = writeDefsMarkers(w, 8.0, len(ac.series), ac.colorScheme)

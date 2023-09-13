@@ -30,6 +30,7 @@ go get https://git.trankiloubilou.fr/fabien/charts
 
 ### Features
 
+- [x] Interactivity with css
 - [x] Automatic color
 - [ ] logarithmique scale
 - [ ] number/date format

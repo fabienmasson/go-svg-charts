@@ -39,20 +39,20 @@ go get https://git.trankiloubilou.fr/fabien/charts
 
 ## Examples
 ### Line chart
-![line chart](https://raw.githubusercontent.com/fabienmasson/go-svg-charts/blob/main/examples/linechart.svg)
-![line chart](https://raw.githubusercontent.com/fabienmasson/go-svg-charts/blob/main/examples/linechartbezier.svg)
+![line chart](https://raw.githubusercontent.com/fabienmasson/go-svg-charts/main/examples/linechart.svg)
+![line chart](https://raw.githubusercontent.com/fabienmasson/go-svg-charts/main/examples/linechartbezier.svg)
 ### Bar chart
-![bar chart](https://raw.githubusercontent.com/fabienmasson/go-svg-charts/blob/main/examples/barchart.svg)
+![bar chart](https://raw.githubusercontent.com/fabienmasson/go-svg-charts/main/examples/barchart.svg)
 ### Tree map
-![treemap](https://raw.githubusercontent.com/fabienmasson/go-svg-charts/blob/main/examples/treemapchart.svg)
+![treemap](https://raw.githubusercontent.com/fabienmasson/go-svg-charts/main/examples/treemapchart.svg)
 ### Pie chart
-![pie chart](https://raw.githubusercontent.com/fabienmasson/go-svg-charts/blob/main/examples/piechart.svg)
+![pie chart](https://raw.githubusercontent.com/fabienmasson/go-svg-charts/main/examples/piechart.svg)
 ### area chart
-![pie chart](https://raw.githubusercontent.com/fabienmasson/go-svg-charts/blob/main/examples/areachart.svg)
-![pie chart bezier](https://raw.githubusercontent.com/fabienmasson/go-svg-charts/blob/main/examples/areachartbezier.svg)
+![pie chart](https://raw.githubusercontent.com/fabienmasson/go-svg-charts/main/examples/areachart.svg)
+![pie chart bezier](https://raw.githubusercontent.com/fabienmasson/go-svg-charts/main/examples/areachartbezier.svg)
 ### heat map
-![Heat map](https://raw.githubusercontent.com/fabienmasson/go-svg-charts/blob/main/examples/heatmap.svg)
+![Heat map](https://raw.githubusercontent.com/fabienmasson/go-svg-charts/main/examples/heatmap.svg)
 ### Geographic map
-![Geo map](https://raw.githubusercontent.com/fabienmasson/go-svg-charts/blob/main/examples/geomap.svg)
+![Geo map](https://raw.githubusercontent.com/fabienmasson/go-svg-charts/main/examples/geomap.svg)
 
 

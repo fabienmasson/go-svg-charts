@@ -38,19 +38,19 @@ go get https://git.trankiloubilou.fr/fabien/charts
 
 ## Examples
 ### Line chart
-![line chart](https://git.trankiloubilou.fr/fabien/charts/raw/branch/main/examples/linechart.svg)
+![line chart](https://github.com/fabienmasson/go-svg-charts/blob/main/examples/linechart.svg)
 ### Bar chart
-![bar chart](https://git.trankiloubilou.fr/fabien/charts/raw/branch/main/examples/barchart.svg)
+![bar chart](https://github.com/fabienmasson/go-svg-charts/blob/main/examples/barchart.svg)
 ### Tree map
-![treemap](https://git.trankiloubilou.fr/fabien/charts/raw/branch/main/examples/treemapchart.svg)
+![treemap](https://github.com/fabienmasson/go-svg-charts/blob/main/examples/treemapchart.svg)
 ### Pie chart
-![pie chart](https://git.trankiloubilou.fr/fabien/charts/raw/branch/main/examples/piechart.svg)
+![pie chart](https://github.com/fabienmasson/go-svg-charts/blob/main/examples/piechart.svg)
 ### area chart
-![pie chart](https://git.trankiloubilou.fr/fabien/charts/raw/branch/main/examples/areachart.svg)
-![pie chart bezier](https://git.trankiloubilou.fr/fabien/charts/raw/branch/main/examples/areachartbezier.svg)
+![pie chart](https://github.com/fabienmasson/go-svg-charts/blob/main/examples/areachart.svg)
+![pie chart bezier](https://github.com/fabienmasson/go-svg-charts/blob/main/examples/areachartbezier.svg)
 ### heat map
-![Heat map](https://git.trankiloubilou.fr/fabien/charts/raw/branch/main/examples/heatmap.svg)
+![Heat map](https://github.com/fabienmasson/go-svg-charts/blob/main/examples/heatmap.svg)
 ### Geographic map
-![Geo map](https://git.trankiloubilou.fr/fabien/charts/raw/branch/main/examples/geomap.svg)
+![Geo map](https://github.com/fabienmasson/go-svg-charts/blob/main/examples/geomap.svg)
 
 

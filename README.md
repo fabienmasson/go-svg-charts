@@ -39,6 +39,7 @@ go get https://git.trankiloubilou.fr/fabien/charts
 ## Examples
 ### Line chart
 ![line chart](https://github.com/fabienmasson/go-svg-charts/blob/main/examples/linechart.svg)
+![line chart](https://github.com/fabienmasson/go-svg-charts/blob/main/examples/linechartbezier.svg)
 ### Bar chart
 ![bar chart](https://github.com/fabienmasson/go-svg-charts/blob/main/examples/barchart.svg)
 ### Tree map
